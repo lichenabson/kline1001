@@ -160,7 +160,6 @@ export class Range extends NamedObject {
     }
 
     setRange(minValue, maxValue) {
-        console.log(minValue, maxValue)
         let mgr = ChartManager.instance;
         let area = mgr.getArea(this.getAreaName());
         this._updated = true;

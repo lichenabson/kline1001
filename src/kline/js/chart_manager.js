@@ -47,7 +47,6 @@ export class ChartManager {
         this._ranges = {};
         this._plotters = {};
         this._themes = {};
-        this._frameMousePos = {};
         this._dsChartStyle = {};
         this._dragStarted = false;
         this._oldX = 0;
@@ -334,20 +333,6 @@ export class ChartManager {
         this._themes[name] = theme;
     }
 
-    getFrameMousePos(name, point) {
-        if (this._frameMousePos[name] !== undefined) {
-            point.x = this._frameMousePos[name].x;
-            point.y = this._frameMousePos[name].y;
-        } else {
-            point.x = -1;
-            point.y = -1;
-        }
-    }
-
-    setFrameMousePos(name, px, py) {
-        this._frameMousePos[name] = {x: px, y: py};
-    }
-
     drawArea(context, area, plotterNames) {
         let areaName = area.getNameObject().getCompAt(2);
         if (areaName === "timeline") {
@@ -561,7 +546,6 @@ export class ChartManager {
         let frame = this.getFrame(frameName);
         if (frame === undefined)
             return;
-        this.setFrameMousePos(frameName, x, y);
         this.hideCrossCursor();
         if (this._highlightedFrame !== frame)
             this.clearHighlight();
@@ -590,7 +574,6 @@ export class ChartManager {
         let frame = this.getFrame(frameName);
         if (frame === undefined)
             return;
-        this.setFrameMousePos(frameName, x, y);
         this.hideCrossCursor();
         this.clearHighlight();
         if (this._capturingMouseArea !== null && this._capturingMouseArea !== undefined) {

@@ -23,7 +23,7 @@ export class Control {
     }
 
     static requestSuccessHandler(res) {
-        Kline.instance.chartMgr.updateData("frame0.k0", res.data.lines);
+        Kline.instance.chartMgr.updateData("frame0.k0", res.data.candle);
         ChartManager.instance.redraw('All', false);
     }
 
@@ -62,4 +62,12 @@ export class Control {
         return false;
     }
 
+    static switchPeriod(name) {
+        ChartManager.instance.showCursor();
+        if (name === 'line') {
+            ChartManager.instance.getChart().strIsLine = true;
+            ChartManager.instance.setChartStyle('frame0.k0', 'Line');
+            ChartManager.instance.getChart().setCurrentPeriod('line');
+        }
+    }
 }

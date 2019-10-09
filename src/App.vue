@@ -1,12 +1,14 @@
 <template>
   <div id="app">
     <div id="kline_container"></div>
+    <button @click="line">切换分时</button>
   </div>
 </template>
 
 <script>
 
 import Kline from './entry'
+import { Control } from './kline/js/control'
 
 export default {
   name: 'app',
@@ -20,12 +22,17 @@ export default {
         symbol: "BTC",
         symbolName: "BTC/USD",
         type: "123", // poll/socket
-        url: "http://192.168.1.131:9090/examples/mock.json",
+        url: "http://192.168.1.62:8080/officialNetworkApi/CandleStickV2?qid=6&type=6",
         onResize: function(width, height) {
             console.log("chart resized: " + width + " " + height);
         }
     });
      kline.draw();
+  },
+  methods: {
+    line() {
+      Control.switchPeriod('line')
+    }
   }
 }
 </script>

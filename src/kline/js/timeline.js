@@ -17,7 +17,7 @@ export class Timeline extends NamedObject {
         this._innerLeft = 0;
         this._innerWidth = 0;
         this._firstColumnLeft = 0;
-        this._scale = 3;
+        this._scale = 10;
         this._lastScale = -1;
         this._maxItemCount = 0;
         this._maxIndex = 0;
@@ -92,9 +92,8 @@ export class Timeline extends NamedObject {
     }
 
     calcFirstIndex(newMaxItemCount) {
-        return this.validateFirstIndex(
-            this.calcFirstIndexAlignRight(this._firstIndex, this._maxItemCount,
-                newMaxItemCount), newMaxItemCount);
+        const result = this.calcFirstIndexAlignRight(this._firstIndex, this._maxItemCount, newMaxItemCount)
+        return this.validateFirstIndex(result, newMaxItemCount);
     }
 
     updateMaxItemCount() {
@@ -121,14 +120,14 @@ export class Timeline extends NamedObject {
         this._firstColumnLeft = this.calcFirstColumnLeft(newMaxItemCount);
     }
 
-    validateFirstIndex(firstIndex, maxItemCount) {
+    validateFirstIndex(firstIndex) {
         if (this._maxIndex < 1) {
             return -1;
         }
         if (firstIndex < 0) {
             return 0;
         }
-        let lastFirst = Math.max(0, this._maxIndex - 1 /*maxItemCount*/);
+        let lastFirst = Math.max(0, this._maxIndex - 1);
         if (firstIndex > lastFirst) {
             return lastFirst;
         }
@@ -217,8 +216,8 @@ export class Timeline extends NamedObject {
     }
 
     move(x) {
-        this._firstIndex = this.validateFirstIndex(
-            this._savedFirstIndex - this.calcColumnCount(x), this._maxItemCount);
+        const moveCount = this.calcColumnCount(x);
+        this._firstIndex = this.validateFirstIndex(this._savedFirstIndex - moveCount);
         if (this._selectedIndex >= 0)
             this.validateSelectedIndex();
     }

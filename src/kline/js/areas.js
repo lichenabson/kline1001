@@ -383,21 +383,4 @@ export class ChartAreaGroup extends ChartArea {
     }
     return null;
   }
-
-  onMouseLeave(x, y) {
-    let i,
-      cnt = this._areas.length;
-    for (i = 0; i < cnt; i++) this._areas[i].onMouseLeave(x, y);
-  }
-
-  onMouseUp(x, y) {
-    let a,
-      i,
-      cnt = this._areas.length;
-    for (i = 0; i < cnt; i++) {
-      a = this._areas[i].onMouseUp(x, y);
-      if (a !== null) return a;
-    }
-    return null;
-  }
 }
