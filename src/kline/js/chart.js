@@ -37,15 +37,16 @@ export class Chart {
         this.updateDataAndDisplay();
     }
 
-    updateDataAndDisplay() {
+    updateDataAndDisplay(type) {
         Kline.instance.symbol = this._symbol;
         Kline.instance.range = this._range;
         ChartManager.instance.setNormalMode();
-        Control.requestData();
+        Control.requestData(type);
     }
 
-    setCurrentPeriod() {
-        this.updateDataAndDisplay();
+    setCurrentPeriod(type) {
+        if(type === 'line')
+        this.updateDataAndDisplay('line');
         Kline.instance.onRangeChange();
     }
 

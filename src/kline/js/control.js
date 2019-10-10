@@ -6,24 +6,33 @@ import {DefaultTemplate} from './templates'
 
 export class Control {
 
-    static requestData() {
-        Control.requestOverHttp();
+    static requestData(type) {
+        Control.requestOverHttp(type);
     }
 
-    static requestOverHttp() {
+    static requestOverHttp(type) {
+        if(type=== 'line') Kline.instance.url = 'https://official.gkoudai.com/officialNetworkApi/TimeChartV4?qid=6&type=1'
         $.ajax({
             type: "GET",
             url: Kline.instance.url,
             dataType: 'json',
             timeout: 30000,
             success: function (res) {
-                Control.requestSuccessHandler(res);
+                Control.requestSuccessHandler(res, type);
             }
         })
     }
 
-    static requestSuccessHandler(res) {
-        Kline.instance.chartMgr.updateData("frame0.k0", res.data.candle);
+    static requestSuccessHandler(res, type) {
+        let result = []
+        if (type === 'line') {
+            res.data.data[0].region.forEach(element => {
+                result = result.concat(element.quotes);
+            });
+        } else {
+            result = res.data.candle
+        }
+        Kline.instance.chartMgr.updateData("frame0.k0", result);
         ChartManager.instance.redraw('All', false);
     }
 

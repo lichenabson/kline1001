@@ -482,16 +482,11 @@ export class ChartManager {
     }
 
     scale(s) {
-        if (this._highlightedFrame === null)
-            return;
-        let hiArea = this._highlightedFrame.getHighlightedArea();
-        if (this.getRange(hiArea.getName()) !== undefined) {
-            let dsName = hiArea.getDataSourceName();
-            let timeline = this.getTimeline(dsName);
-            if (timeline !== null) {
-                timeline.scale(s);
-                this.updateRange(dsName);
-            }
+        let dsName = 'frame0.k0';
+        let timeline = this.getTimeline(dsName);
+        if (timeline) {
+            timeline.scale(s);
+            this.updateRange(dsName);
         }
     }
 
@@ -535,21 +530,10 @@ export class ChartManager {
             this._ranges[n].unselect();
     }
 
-    clearHighlight() {
-        if (this._highlightedFrame !== null && this._highlightedFrame !== undefined) {
-            this._highlightedFrame.highlight(null);
-            this._highlightedFrame = null;
-        }
-    }
-
     onMouseMove(frameName, x, y, drag) {
         let frame = this.getFrame(frameName);
-        if (frame === undefined)
-            return;
         this.hideCrossCursor();
-        if (this._highlightedFrame !== frame)
-            this.clearHighlight();
-        if (this._capturingMouseArea !== null && this._capturingMouseArea !== undefined) {
+        if (this._capturingMouseArea) {
             this._capturingMouseArea.onMouseMove(x, y);
             return;
         }
@@ -563,7 +547,6 @@ export class ChartManager {
             if (a !== null) {
                 if (!Util.isInstance(a, areas.ChartAreaGroup)) {
                     frame.highlight(a);
-                    this._highlightedFrame = frame;
                 }
                 return;
             }
@@ -575,8 +558,7 @@ export class ChartManager {
         if (frame === undefined)
             return;
         this.hideCrossCursor();
-        this.clearHighlight();
-        if (this._capturingMouseArea !== null && this._capturingMouseArea !== undefined) {
+        if (this._capturingMouseArea) {
             this._capturingMouseArea.onMouseLeave(x, y);
             this._capturingMouseArea = null;
         }
